@@ -2,7 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 
 const routes = [{
   path: '/',
-  redirect: '/rentHouseInfo'
+  redirect: '/housedevicetype'
 },
 {
   path: '/init',
@@ -13,6 +13,11 @@ const routes = [{
   path: '/rentHouseInfo',
   name: 'rentHouseInfo',
   component: () => import('@/view/house/rentHouseInfo.vue')
+},
+{
+  path: '/housedevicetype',
+  name: 'housedevicetype',
+  component: () => import('@/view/house/housedevicetype.vue')
 }
 ]
 
