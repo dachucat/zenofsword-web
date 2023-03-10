@@ -1,0 +1,113 @@
+<template>
+  <div>
+    <el-dialog v-bind="$attrs" v-on="$listeners" @open="onOpen" @close="onClose" title="Dialog Titile">
+      <el-form ref="elForm" :model="formData" :rules="rules" size="medium" label-width="100px">
+        <el-form-item label="名称" prop="name">
+          <el-input v-model="formData.name" placeholder="请输入名称" clearable :style="{width: '100%'}"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="password">
+          <el-input v-model="formData.password" placeholder="请输入密码" clearable :style="{width: '100%'}">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="证书文件" prop="filePath" required>
+          <el-upload ref="filePath" :file-list="filePathfileList" :action="filePathAction"
+            :before-upload="filePathBeforeUpload">
+            <el-button size="small" type="primary" icon="el-icon-upload">点击上传</el-button>
+          </el-upload>
+        </el-form-item>
+        <el-form-item label="说明" prop="desc">
+          <el-input v-model="formData.desc" type="textarea" placeholder="请输入说明"
+            :autosize="{minRows: 4, maxRows: 4}" :style="{width: '100%'}"></el-input>
+        </el-form-item>
+        <el-form-item label="下拉选择" prop="field106">
+          <el-select v-model="formData.field106" placeholder="请选择下拉选择" clearable :style="{width: '100%'}">
+            <el-option v-for="(item, index) in field106Options" :key="index" :label="item.label"
+              :value="item.value" :disabled="item.disabled"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer">
+        <el-button @click="close">取消</el-button>
+        <el-button type="primary" @click="handelConfirm">确定</el-button>
+      </div>
+    </el-dialog>
+  </div>
+</template>
+<script>
+export default {
+  inheritAttrs: false,
+  components: {},
+  props: [],
+  data() {
+    return {
+      formData: {
+        name: undefined,
+        password: undefined,
+        filePath: null,
+        desc: undefined,
+        field106: undefined,
+      },
+      rules: {
+        name: [{
+          required: true,
+          message: '请输入名称',
+          trigger: 'blur'
+        }],
+        password: [{
+          required: true,
+          message: '请输入密码',
+          trigger: 'blur'
+        }],
+        desc: [],
+        field106: [{
+          required: true,
+          message: '请选择下拉选择',
+          trigger: 'change'
+        }],
+      },
+      filePathAction: 'https://jsonplaceholder.typicode.com/posts/',
+      filePathfileList: [],
+      field106Options: [{
+        "label": "选项一",
+        "value": 1
+      }, {
+        "label": "选项二",
+        "value": 2
+      }],
+    }
+  },
+  computed: {},
+  watch: {},
+  created() {},
+  mounted() {},
+  methods: {
+    onOpen() {},
+    onClose() {
+      this.$refs['elForm'].resetFields()
+    },
+    close() {
+      this.$emit('update:visible', false)
+    },
+    handelConfirm() {
+      this.$refs['elForm'].validate(valid => {
+        if (!valid) return
+        this.close()
+      })
+    },
+    filePathBeforeUpload(file) {
+      let isRightSize = file.size / 1024 < 50
+      if (!isRightSize) {
+        this.$message.error('文件大小超过 50KB')
+      }
+      return isRightSize
+    },
+  }
+}
+
+</script>
+<style>
+.el-upload__tip {
+  line-height: 1.2;
+}
+
+</style>
